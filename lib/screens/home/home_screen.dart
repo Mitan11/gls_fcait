@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late final List<Animation<double>> _fadeAnims;
   late final List<Animation<Offset>> _slideAnims;
 
-  static const _itemCount = 6; // hero, stats, announce, grid, chips, highlights
+  static const _itemCount = 7; // hero, stats, announce, vision_mission, gallery, chips, highlights
 
   MenuLink _findLink(String route) {
     return menuSections
@@ -123,25 +123,16 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   _staggered(2, const _AnnouncementsCarousel()),
                   const SizedBox(height: 24),
 
-                  // ── Browse Grid ──
-                  _staggered(3, Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _SectionHeader(
-                        title: 'Browse',
-                        icon: Icons.grid_view_rounded,
-                      ),
-                      const SizedBox(height: 12),
-                      _SectionGrid(
-                        onTap: (route) =>
-                            Navigator.pushNamed(context, route),
-                      ),
-                    ],
-                  )),
+                  // ── Our Vision & Mission ──
+                  _staggered(3, const _VisionMissionSection()),
                   const SizedBox(height: 24),
 
+                  // ── Campus Life (Gallery) ──
+                  _staggered(4, const _CampusLifeSection()),
+                  const SizedBox(height: 28),
+
                   // ── Quick Links ──
-                  _staggered(4, Column(
+                  _staggered(5, Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _SectionHeader(
@@ -166,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   const SizedBox(height: 28),
 
                   // ── Campus Highlights ──
-                  _staggered(5, Column(
+                  _staggered(6, Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _SectionHeader(
@@ -659,148 +650,6 @@ class _Announcement {
   final Color color;
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Section Grid with scale animation on tap
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _SectionGrid extends StatelessWidget {
-  const _SectionGrid({required this.onTap});
-
-  final void Function(String route) onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final tiles = [
-      _SectionTile('Courses', Icons.school_rounded, AppColors.primary, '/courses/mca'),
-      _SectionTile('Campus', Icons.celebration_rounded, AppColors.teal, '/campus/events'),
-      _SectionTile('People', Icons.groups_rounded, AppColors.indigo, '/staff/teaching'),
-      _SectionTile('Placements', Icons.work_rounded, AppColors.purple, '/placements'),
-      _SectionTile('Publications', Icons.menu_book_rounded, AppColors.primaryLight, '/publications/journal'),
-      _SectionTile('Contact', Icons.mail_rounded, AppColors.goldDark, '/contact-us'),
-    ];
-
-    return GridView.count(
-      crossAxisCount: 3,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 10,
-      crossAxisSpacing: 10,
-      childAspectRatio: 0.92,
-      children: [
-        for (final tile in tiles)
-          _AnimatedGridTile(tile: tile, onTap: () => onTap(tile.route)),
-      ],
-    );
-  }
-}
-
-class _SectionTile {
-  const _SectionTile(this.label, this.icon, this.color, this.route);
-
-  final String label;
-  final IconData icon;
-  final Color color;
-  final String route;
-}
-
-class _AnimatedGridTile extends StatefulWidget {
-  const _AnimatedGridTile({required this.tile, required this.onTap});
-
-  final _SectionTile tile;
-  final VoidCallback onTap;
-
-  @override
-  State<_AnimatedGridTile> createState() => _AnimatedGridTileState();
-}
-
-class _AnimatedGridTileState extends State<_AnimatedGridTile>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _scaleController;
-  late final Animation<double> _scale;
-
-  @override
-  void initState() {
-    super.initState();
-    _scaleController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 120),
-      lowerBound: 0.0,
-      upperBound: 1.0,
-    );
-    _scale = Tween<double>(begin: 1.0, end: 0.94).animate(
-      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _scaleController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final tile = widget.tile;
-    return GestureDetector(
-      onTapDown: (_) => _scaleController.forward(),
-      onTapUp: (_) {
-        _scaleController.reverse();
-        widget.onTap();
-      },
-      onTapCancel: () => _scaleController.reverse(),
-      child: ScaleTransition(
-        scale: _scale,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-            boxShadow: [
-              BoxShadow(
-                color: tile.color.withValues(alpha: 0.10),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-            border: Border.all(
-              color: tile.color.withValues(alpha: 0.08),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      tile.color.withValues(alpha: 0.14),
-                      tile.color.withValues(alpha: 0.06),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(tile.icon, color: tile.color, size: 24),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                tile.label,
-                textAlign: TextAlign.center,
-                style: AppTextStyles.manrope(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Frosted Glass Chip
@@ -1053,6 +902,332 @@ class _HighlightCardState extends State<_HighlightCard>
           ),
         ),
       ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Our Vision & Mission Section
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _VisionMissionSection extends StatelessWidget {
+  const _VisionMissionSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Our Vision & Mission',
+                style: AppTextStyles.playfair(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textDark,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Container(
+                width: 60,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: AppColors.goldDark,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 20),
+        const _VisionMissionCard(
+          title: 'Vision',
+          content:
+              'To be a globally recognized center of excellence in computer applications and information technology education, fostering innovation, research, and leadership in the digital age.',
+          icon: Icons.visibility_rounded,
+          watermarkIcon: Icons.visibility_outlined,
+          iconColor: AppColors.primary,
+        ),
+        const SizedBox(height: 16),
+        const _VisionMissionCard(
+          title: 'Mission',
+          content:
+              'To provide high-quality education through industry-aligned curriculum, state-of-the-art infrastructure, and a holistic learning environment that empowers students to excel in the global IT sector.',
+          icon: Icons.rocket_launch_rounded,
+          watermarkIcon: Icons.rocket_launch_outlined,
+          iconColor: AppColors.goldDark,
+        ),
+      ],
+    );
+  }
+}
+
+class _VisionMissionCard extends StatelessWidget {
+  const _VisionMissionCard({
+    required this.title,
+    required this.content,
+    required this.icon,
+    required this.watermarkIcon,
+    required this.iconColor,
+  });
+
+  final String title;
+  final String content;
+  final IconData icon;
+  final IconData watermarkIcon;
+  final Color iconColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: 0.08),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            right: -10,
+            bottom: -20,
+            child: Icon(
+              watermarkIcon,
+              size: 140,
+              color: iconColor.withValues(alpha: 0.035),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.cardPadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: iconColor.withValues(alpha: 0.08),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        icon,
+                        color: iconColor,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      title,
+                      style: AppTextStyles.manrope(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textDark,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Text(
+                  content,
+                  style: AppTextStyles.manrope(
+                    fontSize: 13,
+                    color: Colors.black54,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Campus Life (Gallery) Section
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _CampusLifeSection extends StatelessWidget {
+  const _CampusLifeSection();
+
+  static const _images = [
+    'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80', // coding event
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80', // students working
+    'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80', // students talking on steps
+    'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=400&q=80', // library
+    'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=400&q=80', // stage event
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Gallery',
+                    style: AppTextStyles.playfair(
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Recent events and memories from GLS FCAIT',
+                    style: AppTextStyles.manrope(
+                      fontSize: 13,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        const _GalleryCarousel(images: _images),
+      ],
+    );
+  }
+}
+
+class _GalleryCarousel extends StatefulWidget {
+  const _GalleryCarousel({required this.images});
+
+  final List<String> images;
+
+  @override
+  State<_GalleryCarousel> createState() => _GalleryCarouselState();
+}
+
+class _GalleryCarouselState extends State<_GalleryCarousel> {
+  late final PageController _pageController;
+  int _currentPage = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.92);
+    _timer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (!mounted) return;
+      final next = (_currentPage + 1) % widget.images.length;
+      _pageController.animateToPage(
+        next,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOutCubic,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 190,
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (i) => setState(() => _currentPage = i),
+            itemCount: widget.images.length,
+            itemBuilder: (_, i) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.08),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                  child: Image.network(
+                    widget.images[i],
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Container(
+                        color: AppColors.primary.withValues(alpha: 0.03),
+                        child: const Center(
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(AppColors.primary),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: AppColors.primary.withValues(alpha: 0.05),
+                      child: Icon(
+                        Icons.image_outlined,
+                        color: AppColors.primary.withValues(alpha: 0.4),
+                        size: 28,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 14),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(widget.images.length, (i) {
+            final active = i == _currentPage;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
+              width: active ? 18 : 6,
+              height: 6,
+              decoration: BoxDecoration(
+                color: active
+                    ? AppColors.primary
+                    : AppColors.primary.withValues(alpha: 0.20),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            );
+          }),
+        ),
+      ],
     );
   }
 }

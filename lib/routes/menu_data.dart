@@ -140,4 +140,12 @@ const menuSections = <MenuSection>[
       MenuLink(title: 'Contact Us', route: '/contact-us'),
     ],
   ),
+  MenuSection(
+    title: 'Legal Information',
+    icon: Icons.gavel_outlined,
+    links: [
+      MenuLink(title: 'Credits', route: '/legal/credits'),
+      MenuLink(title: 'Privacy Policy', route: '/legal/privacy-policy'),
+    ],
+  ),
 ];

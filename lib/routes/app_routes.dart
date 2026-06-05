@@ -29,6 +29,9 @@ import '../screens/publications/publication_conference_screen.dart';
 import '../screens/publications/publication_journal_screen.dart';
 import '../screens/publications/publication_patents_screen.dart';
 import '../screens/splash/splash_screen.dart';
+import '../screens/legal/credits_screen.dart';
+import '../screens/legal/privacy_policy_screen.dart';
+
 
 class AppRoutes {
   static const splash = SplashScreen.routeName;
@@ -66,6 +69,8 @@ class AppRoutes {
       '/app-corner': (_) => const LinkAppCornerScreen(),
       '/media-corner': (_) => const LinkMediaCornerScreen(),
       '/contact-us': (_) => const ContactUsScreen(),
+      '/legal/credits': (_) => const CreditsScreen(),
+      '/legal/privacy-policy': (_) => const PrivacyPolicyScreen(),
     };
   }
 }
