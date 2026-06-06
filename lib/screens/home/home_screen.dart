@@ -732,17 +732,17 @@ class _HighlightCards extends StatelessWidget {
         title: 'Placements',
         subtitle: 'Career-ready training & campus hiring drives',
         icon: Icons.rocket_launch_rounded,
-        color: AppColors.purple,
+        color: AppColors.primary,
         route: '/placements',
-        accent: const Color(0xFF8B6FE0),
+        accent: AppColors.primaryLight,
       ),
       _HighlightItem(
         title: 'Campus Life',
         subtitle: 'Events, clubs, workshops & achievements',
         icon: Icons.celebration_rounded,
-        color: AppColors.teal,
+        color: AppColors.primary,
         route: '/campus/events',
-        accent: const Color(0xFF4BA3A3),
+        accent: AppColors.primaryLight,
       ),
     ];
 
