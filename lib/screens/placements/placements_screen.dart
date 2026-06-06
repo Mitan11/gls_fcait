@@ -5,7 +5,7 @@ import '../../widgets/widgets.dart';
 class PlacementsScreen extends StatelessWidget {
   const PlacementsScreen({super.key});
 
-  static const _accent = Color(0xFF5A3BA9);
+  static const _accent = Color(0xFF0B3D91);
 
   @override
   Widget build(BuildContext context) {

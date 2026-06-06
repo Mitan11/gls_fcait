@@ -6,7 +6,7 @@ import '../../widgets/widgets.dart';
 class NonTeachingStaffScreen extends StatelessWidget {
   const NonTeachingStaffScreen({super.key});
 
-  static const _accent = Color(0xFF5A3BA9);
+  static const _accent = Color(0xFF0B3D91);
 
   @override
   Widget build(BuildContext context) {

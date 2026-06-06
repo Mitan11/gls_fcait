@@ -6,7 +6,7 @@ import '../../widgets/widgets.dart';
 class AboutResourcesScreen extends StatelessWidget {
   const AboutResourcesScreen({super.key});
 
-  static const _accent = Color(0xFFD4AF37);
+  static const _accent = Color(0xFF0B3D91);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class AboutResourcesScreen extends StatelessWidget {
           'Quick access to brochures, policies, academic calendars, and '
           'helpful links for students and visitors.',
       heroIcon: Icons.folder_open_outlined,
-      accentColor: const Color(0xFFB8860B),
+      accentColor: _accent,
       children: [
         Text(
           'Documents',
@@ -33,19 +33,19 @@ class AboutResourcesScreen extends StatelessWidget {
           title: 'University Prospectus 2026',
           subtitle: 'PDF · 4.2 MB · Updated Jan 2026',
           icon: Icons.picture_as_pdf_outlined,
-          accentColor: Color(0xFF0B3D91),
+          accentColor: _accent,
         ),
         const SectionListTile(
           title: 'FCAIT Programme Brochure',
           subtitle: 'PDF · 2.8 MB · MCA & M.Sc. details',
           icon: Icons.menu_book_outlined,
-          accentColor: Color(0xFF2C6B7A),
+          accentColor: _accent,
         ),
         const SectionListTile(
           title: 'Academic Calendar 2025–26',
           subtitle: 'PDF · 1.1 MB · Exam & holiday schedule',
           icon: Icons.calendar_month_outlined,
-          accentColor: Color(0xFF5A3BA9),
+          accentColor: _accent,
         ),
         const SizedBox(height: 8),
         Text(
@@ -60,7 +60,7 @@ class AboutResourcesScreen extends StatelessWidget {
           title: 'Anti-Ragging Policy',
           subtitle: 'Guidelines & helpline numbers',
           icon: Icons.shield_outlined,
-          accentColor: Color(0xFF2A5AB5),
+          accentColor: _accent,
         ),
         const SectionListTile(
           title: 'Library Portal',
@@ -72,13 +72,13 @@ class AboutResourcesScreen extends StatelessWidget {
           title: 'Student Handbook',
           subtitle: 'Rules, facilities & support services',
           icon: Icons.fact_check_outlined,
-          accentColor: Color(0xFF3E5BA9),
+          accentColor: _accent,
         ),
         const SizedBox(height: 6),
         SectionCard(
           title: 'Need help?',
           icon: Icons.support_agent_outlined,
-          accentColor: const Color(0xFF0B3D91),
+          accentColor: _accent,
           body:
               'Visit the Contact Us section or reach the FCAIT office on '
               'campus for admissions, document requests, and general enquiries.',

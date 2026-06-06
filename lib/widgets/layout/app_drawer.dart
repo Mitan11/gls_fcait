@@ -36,6 +36,7 @@ class AppDrawer extends StatelessWidget {
           ),
         ),
         child: SafeArea(
+          bottom: false,
           child: Column(
             children: [
               /// HEADER
@@ -113,8 +114,10 @@ class AppDrawer extends StatelessWidget {
                       top: Radius.circular(30),
                     ),
                   ),
-                  child: Column(
-                    children: [
+                  child: SafeArea(
+                    top: false,
+                    child: Column(
+                      children: [
                       Expanded(
                         child: ListView(
                           padding: const EdgeInsets.all(16),
@@ -124,6 +127,7 @@ class AppDrawer extends StatelessWidget {
                               label: "Home",
                               icon: Icons.home_rounded,
                               route: AppConstants.homeRoute,
+                              isSection: true,
                             ),
 
                             const SizedBox(height: 10),
@@ -174,12 +178,13 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _drawerItem(
     BuildContext context, {
@@ -187,6 +192,7 @@ class AppDrawer extends StatelessWidget {
     required IconData icon,
     required String route,
     bool external = false,
+    bool isSection = false,
   }) {
     final selected = currentRoute == route;
 
@@ -216,15 +222,15 @@ class AppDrawer extends StatelessWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: selected
-                ? AppColors.primary.withValues(alpha: 0.12)
+            color: selected || isSection
+                ? AppColors.primary.withValues(alpha: 0.10)
                 : Colors.grey.shade100,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
             size: 22,
-            color: selected
+            color: selected || isSection
                 ? AppColors.primary
                 : Colors.grey.shade700,
           ),
@@ -233,7 +239,7 @@ class AppDrawer extends StatelessWidget {
           label,
           style: AppTextStyles.manrope(
             fontWeight:
-                selected ? FontWeight.w700 : FontWeight.w500,
+                selected ? FontWeight.w700 : (isSection ? FontWeight.w600 : FontWeight.w500),
             color:
                 selected ? AppColors.primary : Colors.black87,
           ),
@@ -243,9 +249,7 @@ class AppDrawer extends StatelessWidget {
                 Icons.open_in_new,
                 size: 18,
               )
-            : selected
-                ? const Icon(Icons.chevron_right)
-                : null,
+            : null,
         onTap: () => _navigate(context, route),
       ),
     );
@@ -264,6 +268,7 @@ class AppDrawer extends StatelessWidget {
         icon: section.icon,
         route: link.route,
         external: link.isExternal,
+        isSection: true,
       );
     }
 
@@ -316,7 +321,7 @@ class AppDrawer extends StatelessWidget {
               _drawerItem(
                 context,
                 label: link.title,
-                icon: Icons.folder_outlined,
+                icon: link.icon,
                 route: link.route,
                 external: link.isExternal,
               ),

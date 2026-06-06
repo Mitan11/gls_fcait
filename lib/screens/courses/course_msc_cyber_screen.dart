@@ -5,7 +5,7 @@ import '../../widgets/widgets.dart';
 class CourseMscCyberScreen extends StatelessWidget {
   const CourseMscCyberScreen({super.key});
 
-  static const _accent = Color(0xFF2C6B7A);
+  static const _accent = Color(0xFF0B3D91);
 
   @override
   Widget build(BuildContext context) {

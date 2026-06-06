@@ -6,7 +6,7 @@ import '../../widgets/widgets.dart';
 class AboutMessageCenterScreen extends StatelessWidget {
   const AboutMessageCenterScreen({super.key});
 
-  static const _accent = Color(0xFF5A3BA9);
+  static const _accent = Color(0xFF0B3D91);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class AboutMessageCenterScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.06),
+                color: Colors.black.withValues(alpha: 0.06),
                 blurRadius: 12,
                 offset: const Offset(0, 6),
               ),
@@ -69,7 +69,7 @@ class AboutMessageCenterScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 28,
-                backgroundColor: _accent.withOpacity(0.12),
+                backgroundColor: _accent.withValues(alpha: 0.12),
                 child: Icon(Icons.person, color: _accent, size: 30),
               ),
               const SizedBox(width: 14),

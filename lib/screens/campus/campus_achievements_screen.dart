@@ -6,7 +6,7 @@ import '../../widgets/widgets.dart';
 class CampusAchievementsScreen extends StatelessWidget {
   const CampusAchievementsScreen({super.key});
 
-  static const _accent = Color(0xFFD4AF37);
+  static const _accent = Color(0xFF0B3D91);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CampusAchievementsScreen extends StatelessWidget {
           'Celebrating competitions, publications, placements, and leadership '
           'by FCAIT students across the nation.',
       heroIcon: Icons.emoji_events_outlined,
-      accentColor: const Color(0xFFB8860B),
+      accentColor: _accent,
       children: [
         const Row(
           children: [
@@ -58,7 +58,7 @@ class CampusAchievementsScreen extends StatelessWidget {
         const SectionCard(
           title: 'Share your story',
           icon: Icons.campaign_outlined,
-          accentColor: Color(0xFF0B3D91),
+          accentColor: _accent,
           body:
               'Students and faculty can nominate achievements for the campus '
               'newsletter and social media features.',
